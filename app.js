@@ -84,6 +84,46 @@ app.post('/createBlog',async(req,res)=>{
     })
 })
 
+
+//EDIT BLOG API
+
+
+app.patch('/blog/:id',async(req,res)=>{
+    const id=req.params.id
+    const title=req.body.title
+    const subtitle=req.body.subtitle
+    const description=req.body.description
+
+    const blog=await Blog.findByIdAndUpdate(id,{
+        title,subtitle,description
+    })
+    if(!blog){
+res.json({
+    status:404,
+    message:"no blog found"
+})
+}
+else{
+res.json({
+    status:200,
+    blog,
+    message:`${blog.title} blog updated successfully`
+})
+    
+}  
+})
+
+
+
+//DELETE BLOG API
+
+app.delete('/deleteblog/:id',async(req,res)=>{
+    const id=req.params.id
+    await Blog.findByIdAndDelete(id)
+    res.json({
+        message:'Blog delete successfully!!'
+    })
+})
 app.listen(3000,(req,res)=>{
     console.log('Server is running in 3000 port');
 })
